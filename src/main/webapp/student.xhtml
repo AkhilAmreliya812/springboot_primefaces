@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+		"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head></h:head>
+<h:body>
+	<h1>Student Management</h1>
+	<h:form>
+		<p:commandButton value="Back" id="back" action="#{studentBean.back}" />
+	</h:form>
+	<div class="card">
+		<br></br>
+		<h:form id="studentForm">
+			<p:accordionPanel widgetVar="basic">
+				<p:tab title="Student basic information">
+					<p:panelGrid columns="3">
+						<h:outputLabel value="Name" for="name" />
+						<p:inputText value="#{studentBean.student.name}"
+							readonly="#{studentBean.student.isViewMode}" required="true"
+							requiredMessage="Student name is required" id="name" />
+						<p:message for="name" />
+						<h:outputLabel value="City" for="city" />
+						<p:inputText id="city" value="#{studentBean.student.city}"
+							requiredMessage="Student city is required"
+							readonly="#{studentBean.student.isViewMode}" required="true" />
+						<p:message for="city" />
+					</p:panelGrid>
+					<br></br>
+					<p:commandButton value="Save" id="save"
+						rendered="#{studentBean.disableSaveButton}"
+						update="extraInfoForm :@form"
+						action="#{studentBean.saveStudentBasicInfo}" />
+				</p:tab>
+			</p:accordionPanel>
+
+		</h:form>
+		<h:form id="extraInfoForm">
+
+			<p:accordionPanel rendered="#{studentBean.extraInfoPanel}">
+				<p:tab title="Student extra information">
+					<h3>Student basic information</h3>
+					<p:panelGrid columns="3">
+						<h:outputLabel value="Name" />
+						<p:inputText value="#{studentBean.student.name}" id="nameEdit"
+							readonly="#{studentBean.student.isViewMode}" />
+						<p:message for="nameEdit" />
+						<h:outputLabel value="City" />
+						<p:inputText value="#{studentBean.student.city}" id="cityEdit"
+							required="true" readonly="#{studentBean.extraInfoFields}"
+							requiredMessage="Student City is required" />
+						<p:message for="cityEdit" />
+					</p:panelGrid>
+
+					<h3>Student extra information</h3>
+					<p:panelGrid columns="3" id="newInfo">
+						<h:outputLabel value="Degree" />
+						<p:inputText value="#{studentBean.student.degree}" required="true"
+							requiredMessage="Student degree is required" id="degree"
+							readonly="#{studentBean.extraInfoFields}" />
+						<p:message for="degree" />
+					</p:panelGrid>
+					<br></br>
+					<p:selectBooleanCheckbox value="#{studentBean.student.active}"
+						itemLabel="IsActive" disabled="#{studentBean.extraInfoFields}"/>
+					<br></br>
+					<p:commandButton value="Save" id="edit" update="viewOnly :@form"
+						rendered="#{studentBean.disableSaveExtraInfoButton}"
+						action="#{studentBean.saveStudentExtraInfo}" />
+				</p:tab>
+			</p:accordionPanel>
+
+		</h:form>
+		<h:form id="viewOnly">
+
+			<p:accordionPanel rendered="#{studentBean.viewPanel}">
+				<p:tab title="Student information (View only)">
+					<h3>Student basic information</h3>
+					<p:panelGrid columns="2">
+						<h:outputLabel value="Id" />
+						<p:inputText value="#{studentBean.student.stdId}" id="StdIdView"
+							readonly="true" required="true" />
+						<h:outputLabel value="Name" />
+						<p:inputText value="#{studentBean.student.name}" id="nameView"
+							readonly="true" />
+						<h:outputLabel value="City" />
+						<p:inputText value="#{studentBean.student.city}" id="cityView"
+							readonly="true" />
+					</p:panelGrid>
+					<h3>Student extra information</h3>
+					<p:panelGrid columns="2" id="viewInfo">
+						<h:outputLabel value="Degree" />
+						<p:inputText value="#{studentBean.student.degree}" readonly="true"
+							id="degreeView" />
+					</p:panelGrid>
+
+					<br></br>
+					<p:selectBooleanCheckbox value="#{studentBean.student.active}"
+						itemLabel="IsActive" disabled="true" />
+				</p:tab>
+			</p:accordionPanel>
+		</h:form>
+	</div>
+</h:body>
+</html>

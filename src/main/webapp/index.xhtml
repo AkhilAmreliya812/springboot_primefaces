@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+		"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head></h:head>
+<h:body>
+	<h1>Student Management</h1>
+	<div class="card">
+		<h:form id="empform">
+			<p:tab>
+				<p:inputText value="#{studentBean.searchStudentId}" id="searchId" />
+				<span></span>
+
+				<p:outputLabel for="@next" value="Basic"/>
+				<p:selectOneMenu id="option" value="#{studentBean.student.active}">
+					<f:selectItem itemLabel="Is Active" />
+					<f:selectItem itemLabel="Yes" itemValue="#{true}" />
+					<f:selectItem itemLabel="No" itemValue="#{false}" />
+				</p:selectOneMenu>
+
+				<span></span>
+				<p:commandButton value="Search" action="#{studentBean.searchData}"
+					update="viewData, :@form" id="search" onclick="reload.location()" />
+				<span></span>
+				<p:commandButton value="Add new student"
+					action="#{studentBean.addNew}" />
+			</p:tab>
+		</h:form>
+		<br></br>
+
+		<h:form id="viewData">
+			<p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true" />
+			<p:panel id="panelView" rendered="#{studentBean.showAllStudent}">
+				<p:tab title="Basic information">
+					<p:dataTable id="basicDT" var="student"
+						value="#{studentBean.students}" rowKey="#{student.id}">
+						<p:column headerText="Id">
+							<h:outputText value="#{student.stdId}" />
+						</p:column>
+						<p:column headerText="Name">
+							<h:outputText value="#{student.name}" />
+						</p:column>
+						<p:column headerText="City">
+							<h:outputText value="#{student.city}" />
+						</p:column>
+						<p:column headerText="Degree">
+							<h:outputText value="#{student.degree}" />
+						</p:column>
+						<p:column style="width:3rem;text-align: center">
+							<p:commandButton update="@form :productDetail"
+								oncomplete="PF('productDialog').show()" title="open"
+								action="#{studentBean.openData}">
+								<f:setPropertyActionListener value="#{student}"
+									target="#{studentBean.student}" />
+							</p:commandButton>
+						</p:column>
+					</p:dataTable>
+				</p:tab>
+			</p:panel>
+		</h:form>
+		<h:form id="oneData">
+			<p:tab title="Basic information"
+				rendered="#{studentBean.showSingleStudent}">
+				<p:dataTable var="student" value="#{studentBean.student}">
+					<p:column headerText="Id">
+						<h:outputText value="#{student.stdId}" />
+					</p:column>
+					<p:column headerText="Name">
+						<h:outputText value="#{student.name}" />
+					</p:column>
+					<p:column headerText="City">
+						<h:outputText value="#{student.city}" />
+					</p:column>
+					<p:column headerText="Degree">
+						<h:outputText value="#{student.degree}" />
+					</p:column>
+					<p:column style="width:3rem;text-align: center">
+						<p:commandButton update="@form :productDetail"
+							oncomplete="PF('productDialog').show()" title="View"
+							action="#{studentBean.openData}">
+							<f:setPropertyActionListener value="#{student}"
+								target="#{studentBean.student}" />
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+			</p:tab>
+		</h:form>
+
+	</div>
+	<p:dialog header="student Info" widgetVar="productDialog" modal="true"
+		showEffect="fade" hideEffect="fade" resizable="false">
+		<p:outputPanel id="productDetail" style="text-align:center;">
+		</p:outputPanel>
+	</p:dialog>
+</h:body>
+</html>
